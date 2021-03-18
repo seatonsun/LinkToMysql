@@ -19,6 +19,8 @@ db = pymysql.connect(
 )
 
 
+
+
 def company_research_gcsw(cid, cname, pname):
     cur = db.cursor()
 
@@ -67,6 +69,8 @@ def company_research_gcsw(cid, cname, pname):
                     pass
         else:
             print("No such company in company list!!")
+            #######这要加上添加新公司的代码，添加到company表中
+            sqlnew = ''
 
 
 def company_id_insert_gcsw(resultlist):
