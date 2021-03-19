@@ -2,6 +2,7 @@ import pymysql
 import re
 from urllib import parse
 
+'''资产重组模块'''
 
 db = pymysql.connect(
     host="localhost",
@@ -11,18 +12,20 @@ db = pymysql.connect(
     db="lnulinkdb"
 )
 
-###传来的三个都是字典
-def company_research_zccz(entitydoc, predict, mentionlist):
-    cur = db.cursor()
-    resultlist = []
-    resultlistfina = []
 
-    for cid in entitydoc:
-        mention = mentionlist[cid]
-        cname = predict[mention]
+def company_research_zccz(cid,cname):
+        cur = db.cursor()
+        resultlist = []
+    #resultlistfina = []
+
+    # for cid in entitydoc:
+    #     mention = mentionlist[cid]
+    #     cname = predict[mention]
 
         if cname is None:
             print("No cname")
+        elif cid is None:
+            print("cid is None")
         else:
             sql1 = 'select company_id from company where company_name = "' + str(cname) + '"'
             cur.execute(sql1)
@@ -42,8 +45,8 @@ def company_research_zccz(entitydoc, predict, mentionlist):
                     # return company_id
                     resultlist.append(company_id)
                 print(resultlist)
-                #return resultlist
-                resultlistfina.append(resultlist)
+                return resultlist
+                #resultlistfina.append(resultlist)
 
             else:
                 '''查询company表中最后一条数据的id'''
@@ -71,9 +74,9 @@ def company_research_zccz(entitydoc, predict, mentionlist):
 
 
                 '''将对应的新id存到company表中'''
-                sqlnew ='insert into company set companyname = "' + str(cname) + '",company_id ="' + str(company_new_id) + '" ;'
+                sqlnew ='insert into company set company_name = "' + str(cname) + '",company_id ="' + str(company_new_id) + '" ;'
                 cur.execute(sqlnew)
-                '''将对应的新comapnyname存到company表中'''
+                '''将对应的事件论元表中的对应cid的数据取出'''
                 sql2 = 'select name,bename,time,remaketime from zccz where cid = "' + str(cid) + '"'
                 cur.execute(sql2)
                 result_2 = cur.fetchone()
@@ -86,20 +89,17 @@ def company_research_zccz(entitydoc, predict, mentionlist):
 
                 resultlist.append(company_new_id)
                 print(resultlist)
-                # return resultlist
-                resultlistfina.append(resultlist)
+                return resultlist
+                #resultlistfina.append(resultlist)
 
-    return resultlistfina
+    #return resultlistfina
 
 
 
-'''下面函数最新想要实现的是 接收的是一个[[xxx,xxx,xxx,...,CP0000000004],[xxx,xxx,xxx,...,CP0000000005],[],[],...]
-这样的数据
-然后将每一条都依次插入数据库新表中'''
-def company_id_insert_zccz(resultlistfina):
-    cur = db.cursor()
+def company_id_insert_zccz(resultlist):
+        cur = db.cursor()
 
-    for resultlist in resultlistfina:
+    # for resultlist in resultlistfina:
 
         if resultlist is None:
             print("resultList is None!!!")
@@ -122,9 +122,9 @@ def company_id_insert_zccz(resultlistfina):
 
 if __name__ == '__main__':
     #company_research_zccz("4", "淘宝")
-    #company_id_insert_zccz(company_research_zccz("4", "淘宝"))
+    company_id_insert_zccz(company_research_zccz("1", "天天公司"))
 
-    '''这应该加新的批量存储新事件的方法'''
+    '''这应该加原来的的批量存储新事件的方法，实现单个存储就行'''
 
 
     db.close()

@@ -2,7 +2,7 @@ import pymysql
 import re
 from urllib import parse
 
-'''重大对外赔付模块'''
+'''重大财产损失模块'''
 
 db = pymysql.connect(
     host="localhost",
@@ -13,7 +13,7 @@ db = pymysql.connect(
 )
 
 
-def company_research_zddwpf(cid,cname):
+def company_research_zdccss(cid,cname):
         cur = db.cursor()
         resultlist = []
         resultlistfina = []
@@ -31,7 +31,7 @@ def company_research_zddwpf(cid,cname):
             cur.execute(sql1)
             if cur.execute(sql1):
                 result_1 = cur.fetchone()
-                sql2 = 'select time,money,paypeople,name from zddwpf where cid = "' + str(cid) + '"'
+                sql2 = 'select otherloss,money,time,name from zdccss where cid = "' + str(cid) + '"'
                 cur.execute(sql2)
                 result_2 = cur.fetchone()
                 for row in result_2:
@@ -75,7 +75,7 @@ def company_research_zddwpf(cid,cname):
                     company_new_id) + '" ;'
                 cur.execute(sqlnew)
                 '''将对应的事件论元表中的对应cid的数据取出'''
-                sql2 = 'select time,money,paypeople,name from zddwpf where cid = "' + str(cid) + '"'
+                sql2 = 'select otherloss,money,time,name from zdccss where cid = "' + str(cid) + '"'
                 cur.execute(sql2)
                 result_2 = cur.fetchone()
                 for row in result_2:
@@ -93,21 +93,20 @@ def company_research_zddwpf(cid,cname):
     #return resultlistfina
 
 
-def company_id_insert_zddwpf(resultlist):
+def company_id_insert_zdccss(resultlist):
         cur = db.cursor()
     # for resultlist in resultlistfina:
-
         if resultlist is None:
             print("resultList is None!!!")
         else:
             #print(resultlist)
-            #sql1 = "INSERT INTO company_link_zddwpf(company_link_zddwpf_name,company_id) VALUES (%s,%s); "
+            #sql1 = "INSERT INTO company_link_zdccss(company_link_zdccss_name,company_id) VALUES (%s,%s); "
             #print(resultlist[0],resultlist[5])
-            sql2 = "INSERT INTO company_link_zddwpf SET " \
-                   "company_link_zddwpf_noticetime = '" + resultlist[0] + \
-                   "',company_link_zddwpf_lossmoney='" + resultlist[1] + \
-                   "',company_link_zddwpf_lossobject='" + resultlist[2] + \
-                   "',company_link_zddwpf_companyname='" + resultlist[3] + \
+            sql2 = "INSERT INTO company_link_zdccss SET " \
+                   "company_link_zdccss_otherloss = '" + resultlist[0] + \
+                   "',company_link_zdccss_lossmoney='" + resultlist[1] + \
+                   "',company_link_zdccss_noticetime='" + resultlist[2] + \
+                   "',company_link_zdccss_companyname='" + resultlist[3] + \
                    "',company_id='" + resultlist[4] + "';"
             #cur.execute(sql1, [str(resultlist[0]), str(resultlist[5])])
 
@@ -117,8 +116,8 @@ def company_id_insert_zddwpf(resultlist):
 
 
 if __name__ == '__main__':
-    #company_research_zddwpf("4", "淘宝")
-    company_id_insert_zddwpf(company_research_zddwpf("4", "淘宝"))
+    #company_research_zdccss("4", "淘宝")
+    company_id_insert_zdccss(company_research_zdccss("4", "淘宝"))
     db.close()
-    # company_research_zddwpf(2, "小酒")
-    # company_research_zddwpf(3,'')
+    # company_research_zdccss(2, "小酒")
+    # company_research_zdccss(3,'')

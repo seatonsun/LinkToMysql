@@ -6,7 +6,7 @@ from LinkToMysql.linkToDBFunction.sxffjzLinkToDB import *
 from LinkToMysql.linkToDBFunction.zccz_LinkToDB import *
 from LinkToMysql.linkToDBFunction.zdaqsg_LinkToDB import *
 from LinkToMysql.linkToDBFunction.zddwpf_LinkToDB import *
-from LinkToMysql.linkToDBFunction.zdzcss_LinkToDB import *
+from LinkToMysql.linkToDBFunction.zdccss_LinkToDB import *
 from LinkToMysql.linkToDBFunction.zwwy_LinkToDB import *
 
 if __name__ == '__main__':
