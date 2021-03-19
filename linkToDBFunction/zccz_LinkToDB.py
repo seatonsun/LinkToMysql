@@ -93,7 +93,9 @@ def company_research_zccz(entitydoc, predict, mentionlist):
 
 
 
-
+'''下面函数最新想要实现的是 接收的是一个[[xxx,xxx,xxx,...,CP0000000004],[xxx,xxx,xxx,...,CP0000000005],[],[],...]
+这样的数据
+然后将每一条都依次插入数据库新表中'''
 def company_id_insert_zccz(resultlistfina):
     cur = db.cursor()
 
